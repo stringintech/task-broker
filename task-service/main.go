@@ -2,6 +2,8 @@ package main
 
 import (
 	amqp "github.com/rabbitmq/amqp091-go"
+	"github.com/stringintech/task-broker/types"
+	"google.golang.org/protobuf/proto"
 	"log"
 )
 
@@ -30,7 +32,12 @@ func main() {
 	)
 	failOnError(err, "failed to declare a queue")
 
-	body := "Hello World"
+	msg := &types.TaskMessage{
+		Content: "Hello World",
+	}
+	body, err := proto.Marshal(msg)
+	failOnError(err, "failed to encode message")
+
 	err = ch.Publish(
 		"",
 		q.Name,
@@ -38,8 +45,8 @@ func main() {
 		false,
 		amqp.Publishing{
 			ContentType: "text/plain",
-			Body:        []byte(body),
+			Body:        body,
 		})
 	failOnError(err, "failed to publish a message")
-	log.Printf("sent message: %s", body)
+	log.Printf("sent message: %s", msg.Content)
 }

@@ -1,6 +1,14 @@
+use prost::Message;
 use lapin::{options::*, types::FieldTable, Connection, ConnectionProperties};
 use futures_util::stream::StreamExt;
 use std::error::Error;
+use std::io::Cursor;
+
+mod message {
+    include!(concat!(env!("OUT_DIR"), "/message.rs"));
+}
+
+use message::TaskMessage;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -26,7 +34,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
     while let Some(delivery) = consumer.next().await {
         match delivery {
             Ok(delivery) => {
-                println!("received message: {}", String::from_utf8_lossy(&delivery.data));
+                let msg = TaskMessage::decode(&mut Cursor::new(&delivery.data))?;
+                println!("received message: {}", msg.content);
                 delivery.ack(BasicAckOptions::default()).await?;
             }
             Err(error) => {
