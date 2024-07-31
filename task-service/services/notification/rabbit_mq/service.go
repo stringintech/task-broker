@@ -1,4 +1,4 @@
-package notification
+package rabbit_mq
 
 import (
 	"fmt"
@@ -7,23 +7,23 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-type ExternalServiceConfig struct {
+type ServiceConfig struct {
 	ConnectionUrl string
 	QueueName     string
 }
 
-type ExternalService struct {
-	config     *ExternalServiceConfig
+type Service struct {
+	config     *ServiceConfig
 	connection *amqp.Connection
 	channel    *amqp.Channel
 	queue      *amqp.Queue
 }
 
-func NewExternalService(config *ExternalServiceConfig) (*ExternalService, error) {
-	return &ExternalService{config: config}, nil
+func NewService(config *ServiceConfig) (*Service, error) {
+	return &Service{config: config}, nil
 }
 
-func (s *ExternalService) Start() error {
+func (s *Service) Start() error {
 	var err error
 	s.connection, err = amqp.Dial(s.config.ConnectionUrl)
 	if err != nil {
@@ -53,13 +53,16 @@ func (s *ExternalService) Start() error {
 	return nil
 }
 
-func (s *ExternalService) Close() error {
+func (s *Service) Close() error {
+	if err := s.ensureStarted(); err != nil {
+		return err
+	}
 	_ = s.channel.Close() //TODO? handle/log errors
 	_ = s.connection.Close()
 	return nil
 }
 
-func (s *ExternalService) OnTaskCreated(task types.Task) error {
+func (s *Service) OnTaskCreated(task types.Task) error {
 	if err := s.ensureStarted(); err != nil {
 		return err
 	}
@@ -81,7 +84,7 @@ func (s *ExternalService) OnTaskCreated(task types.Task) error {
 	)
 }
 
-func (s *ExternalService) ensureStarted() error {
+func (s *Service) ensureStarted() error {
 	if s.queue == nil {
 		return fmt.Errorf("service not started yet")
 	}
