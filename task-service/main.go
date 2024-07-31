@@ -1,52 +1,31 @@
 package main
 
 import (
-	amqp "github.com/rabbitmq/amqp091-go"
+	"github.com/stringintech/task-broker/services/notification"
 	"github.com/stringintech/task-broker/types"
-	"google.golang.org/protobuf/proto"
 	"log"
 )
 
-func failOnError(err error, msg string) {
-	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-	}
-}
-
 func main() {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
-	failOnError(err, "failed to connect to RabbitMQ")
-	defer conn.Close()
-
-	ch, err := conn.Channel()
-	failOnError(err, "failed to open a channel")
-	defer ch.Close()
-
-	q, err := ch.QueueDeclare(
-		"hello",
-		false,
-		false,
-		false,
-		false,
-		nil,
-	)
-	failOnError(err, "failed to declare a queue")
-
-	msg := &types.TaskMessage{
-		Content: "Hello World",
+	c := notification.ExternalServiceConfig{
+		ConnectionUrl: "amqp://guest:guest@localhost:5672/",
+		QueueName:     "task-queue",
 	}
-	body, err := proto.Marshal(msg)
-	failOnError(err, "failed to encode message")
+	var notifService notification.Service
+	var err error
+	if notifService, err = notification.NewExternalService(&c); err != nil {
+		panic(err)
+	}
+	if err = notifService.Start(); err != nil {
+		panic(err)
+	}
+	defer notifService.Close()
 
-	err = ch.Publish(
-		"",
-		q.Name,
-		false,
-		false,
-		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        body,
-		})
-	failOnError(err, "failed to publish a message")
-	log.Printf("sent message: %s", msg.Content)
+	if err = notifService.OnTaskCreated(types.Task{
+		Id:    "dummy-identifier",
+		Title: "dummy-title",
+	}); err != nil {
+		panic(err)
+	}
+	log.Println("sent on task created notification")
 }

@@ -1,9 +1,10 @@
 syntax = "proto3";
 
-package message;
+package types;
 
 option go_package = "github.com/stringintech/task-broker/types";
 
-message TaskMessage {
-  string content = 1;
+message Task {
+  string id = 1;
+  string title = 2;
 }
