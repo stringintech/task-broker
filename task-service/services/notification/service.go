@@ -1,9 +1,9 @@
 package notification
 
-import "github.com/stringintech/task-broker/types"
+import "github.com/stringintech/task-broker/types/event"
 
 type Service interface {
 	Start() error
 	Close() error
-	OnTaskCreated(task types.Task) error //TODO? pass by reference?
+	OnTaskCreated(event.TaskCreated) error //TODO? pass by reference?
 }

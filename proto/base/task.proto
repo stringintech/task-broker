@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package types.base;
+
+option go_package = "github.com/stringintech/task-broker/types/base";
+
+message Task {
+  string id = 1;
+  string title = 2;
+}

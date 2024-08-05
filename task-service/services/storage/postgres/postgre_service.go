@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/stringintech/task-broker/types"
+	types "github.com/stringintech/task-broker/types/base"
 	"strconv"
 )
 

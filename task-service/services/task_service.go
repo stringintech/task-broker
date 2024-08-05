@@ -3,7 +3,8 @@ package services
 import (
 	"github.com/stringintech/task-broker/services/notification"
 	"github.com/stringintech/task-broker/services/storage"
-	"github.com/stringintech/task-broker/types"
+	types "github.com/stringintech/task-broker/types/base"
+	event "github.com/stringintech/task-broker/types/event"
 )
 
 type TaskService struct {
@@ -16,5 +17,5 @@ func (s *TaskService) CreateTask(task *types.Task) error { //TODO return typed e
 	if err != nil {
 		return err
 	}
-	return s.NotificationService.OnTaskCreated(*task)
+	return s.NotificationService.OnTaskCreated(event.TaskCreated{Task: task})
 }

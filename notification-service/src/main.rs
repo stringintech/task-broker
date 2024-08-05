@@ -1,14 +1,14 @@
+mod types;
+mod services;
+
 use prost::Message;
 use lapin::{options::*, types::FieldTable, Connection, ConnectionProperties};
 use futures_util::stream::StreamExt;
 use std::error::Error;
 use std::io::Cursor;
-
-mod types {
-    include!(concat!(env!("OUT_DIR"), "/types.rs"));
-}
-
-use types::Task;
+use types::event;
+use crate::services::event_handler::EventHandler;
+use crate::services::notification_service::EmailNotificationService;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -29,19 +29,28 @@ async fn main() -> Result<(), Box<dyn Error>> {
         FieldTable::default(),
     ).await?;
 
-    println!("waiting for task notifications");
+    println!("waiting for task events");
 
+    let email_service = EmailNotificationService::new("localhost".parse().unwrap(), 1025);
+    let handler = EventHandler::new(Box::new(email_service));
+
+    // Consume messages
     while let Some(delivery) = consumer.next().await {
         match delivery {
             Ok(delivery) => {
-                let task = Task::decode(&mut Cursor::new(&delivery.data))?;
-                println!("received task notification");
-                println!("task id: {}", task.id);
-                println!("task title: {}", task.title);
-                delivery.ack(BasicAckOptions::default()).await?;
+                let event = event::TaskCreated::decode(&mut Cursor::new(&delivery.data))?;
+                match handler.handle_event_task_created(&event) {
+                    Ok(()) => {
+                        println!("event handled");
+                        delivery.ack(BasicAckOptions::default()).await?;
+                    }
+                    Err(error) => {
+                        eprintln!("error handling event: {:?}", error);
+                    }
+                }
             }
             Err(error) => {
-                eprintln!("error receiving task notification: {:?}", error);
+                eprintln!("error receiving task event: {:?}", error);
             }
         }
     }

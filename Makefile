@@ -6,7 +6,7 @@ RUST_OUT_DIR=./notification-service/src/types
 
 proto-gen-go:
 	rm -rf $(GO_OUT_DIR)/*
-	protoc -I=$(PROTO_DIR) --go_out=$(GO_OUT_DIR) $(PROTO_DIR)/*
+	find $(PROTO_DIR) -name "*.proto" -exec protoc -I=$(PROTO_DIR) --go_out=$(GO_OUT_DIR) {} +
 	mv $(GO_OUT_DIR)/github.com/stringintech/task-broker/types/* $(GO_OUT_DIR)/
 	rm -rf $(GO_OUT_DIR)/github.com
 

@@ -6,7 +6,7 @@ import (
 	rabbitMqNotification "github.com/stringintech/task-broker/services/notification/rabbit_mq"
 	"github.com/stringintech/task-broker/services/storage"
 	postgresStorage "github.com/stringintech/task-broker/services/storage/postgres"
-	"github.com/stringintech/task-broker/types"
+	types "github.com/stringintech/task-broker/types/base"
 	"log"
 )
 
@@ -48,5 +48,5 @@ func main() {
 	}); err != nil {
 		panic(err)
 	}
-	log.Println("task created and notification sent")
+	log.Println("task created")
 }

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package types.event;
+
+import "base/task.proto";
+
+option go_package = "github.com/stringintech/task-broker/types/event";
+
+
+message TaskCreated {
+  types.base.Task task = 1;
+}

@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.28.1
 // 	protoc        v4.25.1
-// source: task.proto
+// source: base/task.proto
 
-package types
+package base
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -32,7 +32,7 @@ type Task struct {
 func (x *Task) Reset() {
 	*x = Task{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_task_proto_msgTypes[0]
+		mi := &file_base_task_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -45,7 +45,7 @@ func (x *Task) String() string {
 func (*Task) ProtoMessage() {}
 
 func (x *Task) ProtoReflect() protoreflect.Message {
-	mi := &file_task_proto_msgTypes[0]
+	mi := &file_base_task_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +58,7 @@ func (x *Task) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Task.ProtoReflect.Descriptor instead.
 func (*Task) Descriptor() ([]byte, []int) {
-	return file_task_proto_rawDescGZIP(), []int{0}
+	return file_base_task_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Task) GetId() string {
@@ -75,36 +75,37 @@ func (x *Task) GetTitle() string {
 	return ""
 }
 
-var File_task_proto protoreflect.FileDescriptor
+var File_base_task_proto protoreflect.FileDescriptor
 
-var file_task_proto_rawDesc = []byte{
-	0x0a, 0x0a, 0x74, 0x61, 0x73, 0x6b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x07, 0x6d, 0x65,
-	0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x2c, 0x0a, 0x04, 0x54, 0x61, 0x73, 0x6b, 0x12, 0x0e, 0x0a,
-	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x14, 0x0a,
-	0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69,
-	0x74, 0x6c, 0x65, 0x42, 0x2b, 0x5a, 0x29, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
-	0x6d, 0x2f, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x69, 0x6e, 0x74, 0x65, 0x63, 0x68, 0x2f, 0x74,
-	0x61, 0x73, 0x6b, 0x2d, 0x62, 0x72, 0x6f, 0x6b, 0x65, 0x72, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+var file_base_task_proto_rawDesc = []byte{
+	0x0a, 0x0f, 0x62, 0x61, 0x73, 0x65, 0x2f, 0x74, 0x61, 0x73, 0x6b, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x12, 0x0a, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x22, 0x2c, 0x0a,
+	0x04, 0x54, 0x61, 0x73, 0x6b, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x42, 0x30, 0x5a, 0x2e, 0x67,
+	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67,
+	0x69, 0x6e, 0x74, 0x65, 0x63, 0x68, 0x2f, 0x74, 0x61, 0x73, 0x6b, 0x2d, 0x62, 0x72, 0x6f, 0x6b,
+	0x65, 0x72, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2f, 0x62, 0x61, 0x73, 0x65, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_task_proto_rawDescOnce sync.Once
-	file_task_proto_rawDescData = file_task_proto_rawDesc
+	file_base_task_proto_rawDescOnce sync.Once
+	file_base_task_proto_rawDescData = file_base_task_proto_rawDesc
 )
 
-func file_task_proto_rawDescGZIP() []byte {
-	file_task_proto_rawDescOnce.Do(func() {
-		file_task_proto_rawDescData = protoimpl.X.CompressGZIP(file_task_proto_rawDescData)
+func file_base_task_proto_rawDescGZIP() []byte {
+	file_base_task_proto_rawDescOnce.Do(func() {
+		file_base_task_proto_rawDescData = protoimpl.X.CompressGZIP(file_base_task_proto_rawDescData)
 	})
-	return file_task_proto_rawDescData
+	return file_base_task_proto_rawDescData
 }
 
-var file_task_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_task_proto_goTypes = []interface{}{
-	(*Task)(nil), // 0: message.Task
+var file_base_task_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_base_task_proto_goTypes = []interface{}{
+	(*Task)(nil), // 0: types.base.Task
 }
-var file_task_proto_depIdxs = []int32{
+var file_base_task_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -112,13 +113,13 @@ var file_task_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_task_proto_init() }
-func file_task_proto_init() {
-	if File_task_proto != nil {
+func init() { file_base_task_proto_init() }
+func file_base_task_proto_init() {
+	if File_base_task_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_task_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_base_task_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Task); i {
 			case 0:
 				return &v.state
@@ -135,18 +136,18 @@ func file_task_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_task_proto_rawDesc,
+			RawDescriptor: file_base_task_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_task_proto_goTypes,
-		DependencyIndexes: file_task_proto_depIdxs,
-		MessageInfos:      file_task_proto_msgTypes,
+		GoTypes:           file_base_task_proto_goTypes,
+		DependencyIndexes: file_base_task_proto_depIdxs,
+		MessageInfos:      file_base_task_proto_msgTypes,
 	}.Build()
-	File_task_proto = out.File
-	file_task_proto_rawDesc = nil
-	file_task_proto_goTypes = nil
-	file_task_proto_depIdxs = nil
+	File_base_task_proto = out.File
+	file_base_task_proto_rawDesc = nil
+	file_base_task_proto_goTypes = nil
+	file_base_task_proto_depIdxs = nil
 }

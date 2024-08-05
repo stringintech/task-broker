@@ -3,7 +3,7 @@ package rabbit_mq
 import (
 	"fmt"
 	amqp "github.com/rabbitmq/amqp091-go"
-	"github.com/stringintech/task-broker/types"
+	"github.com/stringintech/task-broker/types/event"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -62,12 +62,12 @@ func (s *Service) Close() error {
 	return nil
 }
 
-func (s *Service) OnTaskCreated(task types.Task) error {
+func (s *Service) OnTaskCreated(e event.TaskCreated) error {
 	if err := s.ensureStarted(); err != nil {
 		return err
 	}
 
-	body, err := proto.Marshal(&task)
+	body, err := proto.Marshal(&e)
 	if err != nil {
 		return err
 	}
